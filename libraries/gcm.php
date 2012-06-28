@@ -2,9 +2,10 @@
 /**
  *
  * @package GCM (Google Cloud Messaging)
- * @version $Id$
- * @copyright (c) 2012 
+ * @copyright (c) 2012 AntonGorodezkiy
+ * info: https://github.com/antongorodezkiy/codeigniter-gcm/
  * Description: PHP Codeigniter Google Cloud Messaging Library
+ * License: GNU/GPL 2
  */
 
 class GCM {
