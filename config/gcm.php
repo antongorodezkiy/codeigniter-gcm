@@ -17,8 +17,8 @@ $config['gcm_api_key'] = '';
 
 /*
 |--------------------------------------------------------------------------
-| User data
+| API Send Address
 |--------------------------------------------------------------------------
 |
 */
-$config['gcm_send_address'] = 'https://android.googleapis.com/gcm/send';
+$config['gcm_api_send_address'] = 'https://android.googleapis.com/gcm/send';
