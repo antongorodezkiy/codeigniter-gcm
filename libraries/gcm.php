@@ -164,19 +164,22 @@ class GCM {
 	protected function parseResponse()
 	{
 		if ($this->responseInfo['http_code'] == 200)
-		{
+		{			
+			$response = explode("\n",$this->responseData);
+			$responseBody = json_decode($response[count($response)-1]);
 			
-			// Filter message-id or error from response
-			if (preg_match("/id=([a-z0-9_%:\-]+)/i", $response_data, $matches) == 1) {
-				return $matches[1];
-			} else if (preg_match("/Error=([a-z0-9_\-]+)/i", $response_data, $matches) == 1) {
-				throw new Exception($matches[1]);
-			}
-			
+			if ($responseBody->success && !$responseBody->failure)
+				$message = 'All messages were sended successfully';
+			elseif ($responseBody->success && $responseBody->failure)
+				$message = $responseBody->success.' of '.($responseBody->success+$responseBody->failure).' messages were sended successfully';
+			elseif (!$responseBody->success && $responseBody->failure)
+				$message = 'No messages cannot be sended. '.$responseBody->results[0]->error;
+
 			$status = array(
 				'error' => 0,
-				'message' => 'Message was processed successfully'
+				'message' => $message
 			);
+			return true;
 		}
 		elseif ($this->responseInfo['http_code'] == 400)
 		{
