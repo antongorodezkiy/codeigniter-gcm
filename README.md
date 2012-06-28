@@ -7,8 +7,7 @@ Based on code of c2dm package, (c) 2011 lytsing.org & 2012 thebub.net
 
 
 Simple example of usage:
-{{{
-!php
+
 
 	// controller
 	public function send_gcm()
@@ -28,4 +27,3 @@ Simple example of usage:
 			
 		die(' Worked.');
 	}
-}}}
