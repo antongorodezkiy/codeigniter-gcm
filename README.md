@@ -19,11 +19,12 @@ Simple example of usage:
 		$this->gcm->addRecepient('New reg id');
 		
 		if ($this->gcm->send())
-			echo 'Success';
+			echo 'Success for all messages';
 		else
-			echo 'Error';
+			echo 'Some messages have errors';
 
 		print_r($this->gcm->status);
+		print_r($this->gcm->messagesStatuses);
 			
 		die(' Worked.');
 	}
