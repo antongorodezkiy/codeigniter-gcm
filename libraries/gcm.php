@@ -21,6 +21,16 @@ class GCM {
 	public $responseData = null;
 	public $responseInfo = null;
 	
+	
+	protected $errorStatuses = array(
+		'Unavailable' => 'Maybe missed API key',
+		'MismatchSenderId' => 'Make sure you\'re using one of those when trying to send messages to the device. If you switch to a different sender, the existing registration IDs won\'t work.',
+		'MissingRegistration' => 'Check that the request contains a registration ID',
+		'InvalidRegistration' => 'Check the formatting of the registration ID that you pass to the server. Make sure it matches the registration ID the phone receives in the google',
+		'NotRegistered' => 'Not registered',
+		'MessageTooBig' => 'The total size of the payload data that is included in a message can\'t exceed 4096 bytes'
+	);
+	
 	/**
 	 * Constructor
 	 */
@@ -136,7 +146,7 @@ class GCM {
 	{
 
 		$headers[] = 'Content-Type:application/json';
-		$headers[] = 'Authorization:auth='.$this->apiKey;
+		$headers[] = 'Authorization:key='.$this->apiKey;
 		
 		$curl = curl_init();
 		  
@@ -176,15 +186,15 @@ class GCM {
 			elseif (!$responseBody->success && $responseBody->failure)
 				$message = 'No messages cannot be sended. '.$responseBody->results[0]->error;
 
-			$status = array(
+			$this->status = array(
 				'error' => 0,
-				'message' => $message
+				'message' => $this->errorStatuses[$responseBody->results[0]->error]
 			);
 			return true;
 		}
 		elseif ($this->responseInfo['http_code'] == 400)
 		{
-			$status = array(
+			$this->status = array(
 				'error' => 1,
 				'message' => 'Request could not be parsed as JSON'
 			);
@@ -192,7 +202,7 @@ class GCM {
 		}
 		elseif ($this->responseInfo['http_code'] == 401)
 		{
-			$status = array(
+			$this->status = array(
 				'error' => 1,
 				'message' => 'There was an error authenticating the sender account'
 			);
@@ -200,7 +210,7 @@ class GCM {
 		}
 		elseif ($this->responseInfo['http_code'] == 500)
 		{
-			$status = array(
+			$this->status = array(
 				'error' => 1,
 				'message' => 'There was an internal error in the GCM server while trying to process the request'
 			);
@@ -208,7 +218,7 @@ class GCM {
 		}
 		elseif ($response_info['http_code'] == 503)
 		{
-			$status = array(
+			$this->status = array(
 				'error' => 1,
 				'message' => 'Server is temporarily unavailable'
 			);
@@ -216,7 +226,7 @@ class GCM {
 		}
 		else
 		{
-			$status = array(
+			$this->status = array(
 				'error' => 1,
 				'message' => 'Status undefined'
 			);
