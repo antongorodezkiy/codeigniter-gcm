@@ -18,6 +18,7 @@ class GCM {
 	protected $message = '';
 	
 	public $status = array();
+	public $messagesStatuses = array();
 	public $responseData = null;
 	public $responseInfo = null;
 	
@@ -180,17 +181,50 @@ class GCM {
 			$responseBody = json_decode($response[count($response)-1]);
 			
 			if ($responseBody->success && !$responseBody->failure)
-				$message = 'All messages were sended successfully';
+			{
+				$message = 'All messages were sent successfully';
+				$error = 0;
+			}
 			elseif ($responseBody->success && $responseBody->failure)
-				$message = $responseBody->success.' of '.($responseBody->success+$responseBody->failure).' messages were sended successfully';
+			{
+				$message = $responseBody->success.' of '.($responseBody->success+$responseBody->failure).' messages were sent successfully';
+				$error = 1;
+			}
 			elseif (!$responseBody->success && $responseBody->failure)
-				$message = 'No messages cannot be sended. '.$responseBody->results[0]->error;
+			{
+				$message = 'No messages cannot be sent. '.$responseBody->results[0]->error;
+				$error = 1;
+			}
 
 			$this->status = array(
-				'error' => 0,
-				'message' => $this->errorStatuses[$responseBody->results[0]->error]
+				'error' => $error,
+				'message' => $message
 			);
-			return true;
+			
+			$this->messagesStatuses = array();
+			foreach($responseBody->results as $key => $result)
+			{
+				if (isset($result->error) && $result->error)
+				{
+					$this->messagesStatuses[$key] = array(
+						'error' => 1,
+						'regid' => $this->payload['registration_ids'][$key],
+						'message' => $this->errorStatuses[$result->error],
+						'message_id' => ''
+					);
+				}
+				else
+				{
+					$this->messagesStatuses[$key] = array(
+						'error' => 0,
+						'regid' => $this->payload['registration_ids'][$key],
+						'message' => 'Message was sent successfully',
+						'message_id' => $result->message_id
+					);
+				}
+			}
+			
+			return $error;
 		}
 		elseif ($this->responseInfo['http_code'] == 400)
 		{
