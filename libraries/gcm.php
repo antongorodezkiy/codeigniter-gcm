@@ -250,7 +250,7 @@ class GCM {
 			);
 			return false;
 		}
-		elseif ($response_info['http_code'] == 503)
+		elseif ($this->responseInfo['http_code'] == 503)
 		{
 			$this->status = array(
 				'error' => 1,
