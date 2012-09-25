@@ -122,6 +122,15 @@ class GCM {
 	
 	
 	/**
+	 * Clearing group of messages
+	 */
+	public function clearRecepients() {
+		
+		$this->payload['registration_ids'] = array();
+	}
+
+	
+	/**
 	 * Senging messages to Google Cloud Messaging
 	 *
 	 * @param <string> $group
@@ -224,7 +233,7 @@ class GCM {
 				}
 			}
 			
-			return $error;
+			return !$error;
 		}
 		elseif ($this->responseInfo['http_code'] == 400)
 		{
