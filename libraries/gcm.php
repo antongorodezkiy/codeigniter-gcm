@@ -111,13 +111,24 @@ class GCM {
 	
 	
 	/**
-	 * Setting group of messages
+	 * Adding one recepient
 	 *
 	 * @param <string> $group
 	 */
 	public function addRecepient($registrationId) {
 		
 		$this->payload['registration_ids'][] = $registrationId;
+	}
+	
+	
+	/**
+	 * Setting all recepients
+	 *
+	 * @param <string> $group
+	 */
+	public function setRecepients($registrationIds) {
+		
+		$this->payload['registration_ids'] = $registrationIds;
 	}
 	
 	
