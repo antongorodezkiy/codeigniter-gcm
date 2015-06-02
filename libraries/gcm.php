@@ -24,7 +24,7 @@ class GCM {
 	protected $payload = array();
 	protected $additionalData = array();
 	protected $recepients = array();
-	protected $message = '';
+	protected $message = array();
 
 	public $status = array();
 	public $messagesStatuses = array();
@@ -82,11 +82,10 @@ class GCM {
 	 *
 	 * @param <string> $message
 	 */
-	public function setMessage($message = '') {
-
+	public function setMessage($message = array()) {
 		$this->message = $message;
-		$this->payload['data']['message'] = $message;
-
+		$this->payload['data']['message'] = (!empty($message['message'])) ? $message['message'] : '';
+		$this->payload['data']['title'] = (!empty($message['title'])) ? $message['title'] : '';
 	}
 
 
@@ -98,10 +97,9 @@ class GCM {
 	public function setData($data = array()) {
 
 		$this->payload['data'] = $data;
-
-		if ($this->message)
-			$this->payload['data']['message'] = $this->message;
-
+		$this->payload['data']['message'] = (!empty($this->message['message'])) ? $this->message['message'] : '';
+		$this->payload['data']['title'] = (!empty($this->message['title'])) ? $this->message['title'] : '';
+		
 	}
 
 
@@ -120,11 +118,11 @@ class GCM {
 
 
 	/**
-	 * Adding one recepient
+	 * Adding one recipient
 	 *
 	 * @param <string> $group
 	 */
-	public function addRecepient($registrationId) {
+	public function addRecipient($registrationId) {
 
 		$this->payload['registration_ids'][] = $registrationId;
 	}
