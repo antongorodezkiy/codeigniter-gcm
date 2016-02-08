@@ -40,7 +40,7 @@ class GCM {
 		'NotRegistered' => 'Not registered',
 		'MessageTooBig' => 'The total size of the payload data that is included in a message can\'t exceed 4096 bytes',
 		'InvalidPackageName' => 'Make sure the message was addressed to a registration token whose package name matches the value passed in the request.',
-		'InvalidDataKey' = 'Check that the payload data does not contain a key (such as from, or gcm, or any value prefixed by google) that is used internally by GCM.',
+		'InvalidDataKey' => 'Check that the payload data does not contain a key (such as from, or gcm, or any value prefixed by google) that is used internally by GCM.',
 		'InvalidTtl' => 'Check that the value used in time_to_live is an integer representing a duration in seconds between 0 and 2,419,200 (4 weeks).',
 		'InternalServerError' => 'The server encountered an error while trying to process the request.',
 		'TopicsMessageRateExceeded' => 'The rate of messages to subscribers to a particular topic is too high. Reduce the number of messages sent for this topic, and do not immediately retry sending.',
